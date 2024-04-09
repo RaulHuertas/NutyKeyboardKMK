@@ -7,6 +7,7 @@ from kmk.keys import KC
 from kmk.scanners import DiodeOrientation
 from kmk.scanners.keypad import KeysScanner
 from kmk.modules.split import Split, SplitSide,SplitType
+from kmk.extensions.rgb import RGB, AnimationModes
 
 _KEY_CFG = [
     board.D0,
@@ -25,7 +26,7 @@ class MyKeyboard(KMKKeyboard):
             # optional arguments with defaults:
             value_when_pressed=False,
             pull=True,
-            interval=0.015,  # Debounce time in floating point seconds
+            interval=0.02,  # Debounce time in floating point seconds
             max_events=64
         )
 
@@ -51,7 +52,7 @@ split = Split(
     split_target_left=True,
     data_pin = board.D7,#RX
     data_pin2 = board.D6,#TX
-    uart_flip = False,
+    uart_flip = False
 )
 keyboard.modules.append(split)
 layer0Asignations = [ KC.I]*72
@@ -66,6 +67,17 @@ layer0Asignations[7] =  KC.H
 keyboard.keymap = [
     layer0Asignations
 ]
+
+rgb = RGB(
+    pixel_pin=board.D4, 
+    num_pixels=3,
+    val_default=100,
+    animation_mode = AnimationModes.BREATHING_RAINBOW,
+    reverse_animation = True,
+    animation_speed=5
+)
+#rgb.set_hsv_fill(100, 300, 100)
+keyboard.extensions.append(rgb)
 
 if __name__ == '__main__':
     keyboard.go()
