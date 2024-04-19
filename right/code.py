@@ -18,7 +18,7 @@ _KEY_CFG = [
     board.IO1, board.IO2,board.IO3, board.IO4
 ]
 
-i2c = busio.I2C(scl=board.IO6, sda=board.IO5, frequency=100000)
+i2c = busio.I2C(scl=board.IO6, sda=board.IO5, frequency=400_000)
 mcp = MCP23017(i2c, address=0x20)
 
 class MyKeyboard(KMKKeyboard):
@@ -49,7 +49,7 @@ class MCPKeyboard(KMKKeyboard):
         )
 
 
-keyboard = MCPKeyboard(col_pins, row_pins, DiodeOrientation.COL2ROW)
+keyboard = MCPKeyboard(row_pins, col_pins, DiodeOrientation.ROW2COL)
 keyboard.coord_mapping =  [
     #0,  1,  2,  3,  4,  5, 
     #6,  7,  8,  9, 10, 11,
@@ -69,11 +69,13 @@ keyboard.coord_mapping =  [
 
 split = Split(
     split_side=SplitSide.RIGHT,
+    #split_side=None,
     split_type=SplitType.UART,
     split_target_left=True,
     data_pin = board.IO44,#RX
     data_pin2 = board.IO43,#TX
     uart_flip = False,
+    debug_enabled = True
 )
 #layer = Layers
 #keyboard.modules.append(layer)
@@ -87,18 +89,19 @@ keyboard.debug_enabled = True
 
 
 layer0Asignations = [ KC.NO]*72
-layer0Asignations[0] =  KC.I
-layer0Asignations[1] =  KC.J
-layer0Asignations[2] =  KC.K
-layer0Asignations[3] =  KC.L
-layer0Asignations[4] =  KC.M
-layer0Asignations[5] =  KC.N
-layer0Asignations[6] =  KC.O
-layer0Asignations[7] =  KC.P
+# layer0Asignations[0] =  KC.I
+# layer0Asignations[1] =  KC.J
+# layer0Asignations[2] =  KC.K
+# layer0Asignations[3] =  KC.L
+# layer0Asignations[4] =  KC.M
+# layer0Asignations[5] =  KC.N
+# layer0Asignations[6] =  KC.O
+# layer0Asignations[7] =  KC.P
 keyboard.keymap = [
     layer0Asignations
 ]
 
 if __name__ == '__main__':
     keyboard.go()
+
 
