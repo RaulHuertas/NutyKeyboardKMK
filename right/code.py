@@ -1,4 +1,4 @@
-print("Starting on S3")
+print("Starting on RIGHT")
 
 import board
 import busio
@@ -13,26 +13,13 @@ import digitalio
 from digitalio import DigitalInOut, Direction, Pull
 
 import kmk.scanners.digitalio
+from kmk.hid import HIDModes
 
-_KEY_CFG = [
-    board.IO1, board.IO2,board.IO3, board.IO4
-]
 
-i2c = busio.I2C(scl=board.IO6, sda=board.IO5, frequency=400_000)
+
+i2c = busio.I2C(scl=board.SCL, sda=board.SDA, frequency=1_000_000)
 mcp = MCP23017(i2c, address=0x20)
 
-class MyKeyboard(KMKKeyboard):
-    def __init__(self):
-        # create and register the scanner
-        self.matrix = KeysScanner(
-            # require argument:
-            pins=_KEY_CFG,
-            # optional arguments with defaults:
-            value_when_pressed=False,
-            pull=True,
-            interval=0.015,  # Debounce time in floating point seconds
-            max_events=64
-        )
 
 col_pins = (mcp.get_pin(8), mcp.get_pin(9), mcp.get_pin(10), mcp.get_pin(11), mcp.get_pin(12), mcp.get_pin(13))
 row_pins = (mcp.get_pin(2), mcp.get_pin(3), mcp.get_pin(4), mcp.get_pin(5), mcp.get_pin(6), mcp.get_pin(7))
@@ -72,10 +59,12 @@ split = Split(
     #split_side=None,
     split_type=SplitType.UART,
     split_target_left=True,
-    data_pin = board.IO44,#RX
-    data_pin2 = board.IO43,#TX
+    #data_pin = board.IO44,#RX
+    #data_pin2 = board.IO43,#TX
+    data_pin = board.D7,#RX
+    data_pin2 = board.D6,#TX
     uart_flip = False,
-    debug_enabled = True
+    debug_enabled = False
 )
 #layer = Layers
 #keyboard.modules.append(layer)
@@ -86,7 +75,7 @@ keyboard.modules.append(split)
 
 #keyboard.diode_orientation = DiodeOrientation.ROW2COL
 keyboard.debug_enabled = True
-
+keyboard.debug_enabled = True
 
 layer0Asignations = [ KC.NO]*72
 # layer0Asignations[0] =  KC.I
