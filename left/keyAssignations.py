@@ -79,7 +79,7 @@ def assignKeys ():
     layer0Asignations[62] =  KC.AUDIO_VOL_UP
     layer0Asignations[63] =  KC.TAB
     layer0Asignations[64] =  ESKeycodes.TILDE_DIERESIS
-    layer0Asignations[65] =  KC.PLUS
+    layer0Asignations[65] =  ESKeycodes.PLUS
     layer0Asignations[66] =  KC.ESCAPE
     layer0Asignations[67] =  KC.FD(0)
     layer0Asignations[68] =  KC.RALT
